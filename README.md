@@ -1,0 +1,2 @@
+# NewsTestTask
+news aggregator
