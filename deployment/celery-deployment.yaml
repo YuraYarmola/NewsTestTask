@@ -22,6 +22,11 @@ spec:
             secretKeyRef:
               name: postgres-secret
               key: POSTGRES_DB
+        - name: POSTGRES_HOST
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_HOST
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
