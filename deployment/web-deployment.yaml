@@ -1,3 +1,4 @@
+# web-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,39 +14,48 @@ spec:
         app: web
     spec:
       containers:
-        - name: web
-          image: webapp:latest
-          ports:
-            - containerPort: 8000
-          env:
-            - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: POSTGRES_DB
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: POSTGRES_PASSWORD
-            - name: POSTGRES_HOST
-              value: postgres  # This should match the name of your PostgreSQL service
-            - name: DJANGO_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: django-secret
-                  key: DJANGO_SECRET_KEY
-            - name: DJANGO_DEBUG
-              value: "True"
-            - name: CELERY_BROKER_URL
-              value: amqp://guest:guest@rabbitmq:5672/
-            - name: OPENAI_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: openai-secret
-                  key: OPENAI_API_KEY
+      - name: web
+        image: yurayarmola/webapp:latest
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_DB
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_HOST
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_HOST
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
+        - name: DJANGO_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: django-secret
+              key: DJANGO_SECRET_KEY
+        - name: DJANGO_DEBUG
+          valueFrom:
+            secretKeyRef:
+              name: django-secret
+              key: DJANGO_DEBUG
+        - name: CELERY_BROKER_URL
+          valueFrom:
+            secretKeyRef:
+              name: celery-secret
+              key: CELERY_BROKER_URL
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: openai-secret
+              key: OPENAI_API_KEY
+        ports:
+        - containerPort: 8000
